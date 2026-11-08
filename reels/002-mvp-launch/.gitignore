@@ -5,3 +5,5 @@ dist
 
 # Rendered videos
 out
+# Local secrets written by `elevenlabs onboard`
+/.env.local
