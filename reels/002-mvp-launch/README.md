@@ -26,6 +26,15 @@ Use this if you'd rather work in the ElevenLabs website, for example with your o
 
 Manual clips have no word timestamps, so words are spaced evenly across each clip (per-line accuracy). The API route (`npm run voiceover`) gives exact word timing.
 
+**Easiest: one file for the whole script.** Paste the full narration into ElevenLabs as a single generation and download one MP3. Then:
+
+```bash
+pip install pocketsphinx                       # offline English model, no download needed
+npm run voiceover:import -- narration.mp3
+```
+
+`scripts/align-voiceover.py` force-aligns every word of the script to the recording, and the importer cuts the file at the pauses between lines. This gives word-level sync, the same as the API route. The audio must follow the script exactly. If you change a word in the recording, change it in `src/script.ts` too.
+
 ## How it is built
 
 | Layer | Where | Notes |
