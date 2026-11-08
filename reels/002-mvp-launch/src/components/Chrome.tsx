@@ -57,7 +57,7 @@ const SceneExitContext = createContext<number>(Infinity);
 export const ChapterTag: React.FC<{ index: number; title: string }> = ({ index, title }) => {
   const frame = useCurrentFrame();
   const exitAt = useContext(SceneExitContext);
-  const out = prog(frame, exitAt - 10, 16, EASE_IN_OUT);
+  const out = Number.isFinite(exitAt) ? prog(frame, exitAt - 10, 16, EASE_IN_OUT) : 0;
   const p = prog(frame, 6, 24) * (1 - out);
   const lineP = prog(frame, 0, 28) * (1 - out);
   return (
@@ -130,11 +130,14 @@ export const SceneShell: React.FC<{
     extrapolateRight: "clamp",
     easing: EASE_OUT,
   });
-  const out = interpolate(frame, [durationInFrames - exitFrames, durationInFrames], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-    easing: EASE_IN_OUT,
-  });
+  const out =
+    exitFrames > 0
+      ? interpolate(frame, [durationInFrames - exitFrames, durationInFrames], [0, 1], {
+          extrapolateLeft: "clamp",
+          extrapolateRight: "clamp",
+          easing: EASE_IN_OUT,
+        })
+      : 0;
 
   let maskImage: string | undefined;
   let opacity = 1;
