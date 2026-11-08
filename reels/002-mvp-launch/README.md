@@ -16,6 +16,16 @@ npm run render                # → out/reel-002.mp4
 
 You can preview and render before you generate the voiceover. In that case the timeline estimates each line at about 2.85 words per second. After `npm run voiceover`, every scene, caption and SFX re-times to the real recording on its own. The final duration follows the voiceover (the estimate is about 115 s).
 
+### Alternative: generate the voiceover by hand on elevenlabs.io
+
+Use this if you'd rather work in the ElevenLabs website, for example with your own cloned voice and no API key on this machine:
+
+1. `npm run voiceover:script` writes `VOICEOVER_SCRIPT.md`: one paste-ready line per clip (c01–c31), with voice settings and delivery notes.
+2. Generate each clip in order on elevenlabs.io and download the MP3s. Name them `c01.mp3` … `c31.mp3`, or keep ElevenLabs' timestamped names if you generated them in order.
+3. `npm run voiceover:import -- path/to/clips` trims the silence, copies the clips to `public/voiceover/`, measures their real durations and writes the manifest. The whole video then re-times to your recording.
+
+Manual clips have no word timestamps, so words are spaced evenly across each clip (per-line accuracy). The API route (`npm run voiceover`) gives exact word timing.
+
 ## How it is built
 
 | Layer | Where | Notes |

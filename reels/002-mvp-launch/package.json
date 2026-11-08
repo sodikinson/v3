@@ -37,7 +37,9 @@
     "lint": "eslint src && tsc",
     "voiceover": "node --env-file-if-exists=.env scripts/generate-voiceover.ts",
     "audio": "node scripts/make-audio.ts",
-    "render": "remotion render Reel002 out/reel-002.mp4"
+    "render": "remotion render Reel002 out/reel-002.mp4",
+    "voiceover:script": "node scripts/export-script.ts",
+    "voiceover:import": "node scripts/import-voiceover.ts"
   },
   "allowScripts": {
     "esbuild": false
