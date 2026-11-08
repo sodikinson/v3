@@ -6,14 +6,14 @@ import { ChapterTag } from "../components/Chrome";
 import { Badge, DrawPath, Paper } from "../components/Diagram";
 import { Label, Reveal, RevealWords } from "../components/Type";
 import { sceneClock } from "../timeline";
-import { C, EASE_OUT, MONO, SANS, prog } from "../theme";
+import { C, EASE_IN_OUT, EASE_OUT, MONO, SANS, prog } from "../theme";
 
 const T = sceneClock("s04-bugs");
 
 const COL_L = 80;
 const COL_R = 560;
 const COL_W = 440;
-const BRANCH_Y = 935;
+const BRANCH_Y = 960;
 
 const Chip: React.FC<{ text: string; start: number; tone: "coral" | "yellow" | "paper"; drop?: boolean; rotate?: number }> = ({
   text,
@@ -50,7 +50,6 @@ const Chip: React.FC<{ text: string; start: number; tone: "coral" | "yellow" | "
 
 export const Scene04Bugs: React.FC = () => {
   const frame = useCurrentFrame();
-  const tQ = T.cue("c12");
   const tAsk = T.cue("c13");
   // On-screen wording is tighter than the narration; each word lands on its spoken counterpart.
   const questionAt = ["Are", "bugs", "stopping", "users", "from", "getting", "the", "core", "value"].map((w) => T.word("c13", w));
@@ -61,28 +60,22 @@ export const Scene04Bugs: React.FC = () => {
   const tSecondary = T.word("c15", "secondary");
   const tLaunch = T.word("c15", "launch?");
 
-  const cardIn = prog(frame, tAsk - 6, 18);
-  const testIn = prog(frame, T.cue("c14") - 4, 16);
+  const cardIn = prog(frame, tAsk - 6, 24);
+  const testIn = prog(frame, T.cue("c14") - 4, 22);
+  // Once the question is asked and the test is on screen, the card leaves and the test rises.
+  const makeRoom = prog(frame, tShould - 16, 28, EASE_IN_OUT);
 
   return (
     <AbsoluteFill>
       <Background />
       <ChapterTag index={4} title="WHICH BUGS MATTER?" />
 
-      <div style={{ position: "absolute", left: 80, top: 330 }}>
-        <Reveal start={tQ} distance={18}>
-          <Label size={24} color={C.yellow}>
-            The real question
-          </Label>
-        </Reveal>
-      </div>
-
       {/* Question card */}
       <Paper
         id="q"
         torn={{ bottom: true }}
         rotate={-0.8}
-        style={{ left: 80, top: 390, width: 920, height: 310, opacity: cardIn, translate: `0 ${(1 - cardIn) * 40}px` }}
+        style={{ left: 80, top: 330, width: 920, height: 310, opacity: cardIn * (1 - makeRoom), translate: `0 ${(1 - cardIn) * 40 - makeRoom * 60}px` }}
       >
         <div style={{ position: "absolute", left: 44, top: 34, display: "flex", alignItems: "center", gap: 12 }}>
           <Badge start={tAsk} kind="warn" size={34} fill={C.coral} color={C.paper} />
@@ -100,8 +93,9 @@ export const Scene04Bugs: React.FC = () => {
         </div>
       </Paper>
 
+      <AbsoluteFill style={{ translate: `0 ${-makeRoom * 330}px` }}>
       {/* Core value test */}
-      <div style={{ position: "absolute", left: 80, right: 80, top: 740, opacity: testIn }}>
+      <div style={{ position: "absolute", left: 80, right: 80, top: 690, opacity: testIn }}>
         <Label size={20} style={{ marginBottom: 16 }}>
           Core value test
         </Label>
@@ -175,7 +169,7 @@ export const Scene04Bugs: React.FC = () => {
           </div>
         </Reveal>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-          {["Custom reports", "CSV export", "Mobile layout", "Email reminders"].map((b, i) => (
+          {["Custom reports", "CSV export", "Mobile layout"].map((b, i) => (
             <Chip key={b} text={b} start={tSecondary + i * 4} tone="yellow" drop rotate={i % 2 ? 1.5 : -1.5} />
           ))}
         </div>
@@ -198,6 +192,8 @@ export const Scene04Bugs: React.FC = () => {
           </div>
         </Reveal>
       </div>
+
+      </AbsoluteFill>
 
       <Sequence from={tAsk} layout="none">
         <Audio src={staticFile("audio/warn.mp3")} volume={0.35} />

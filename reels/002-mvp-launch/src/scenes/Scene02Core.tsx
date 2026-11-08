@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, Sequence, staticFile, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Sequence, staticFile } from "remotion";
 import { Audio } from "@remotion/media";
 import { Background } from "../components/Texture";
 import { ChapterTag } from "../components/Chrome";
@@ -7,7 +7,7 @@ import { Arrow, Badge, Node } from "../components/Diagram";
 import { Label, Reveal } from "../components/Type";
 import { COL_X, DOC_H, DocumentPipeline3D, PX_PER_UNIT } from "../three/DocumentPipeline3D";
 import { sceneClock } from "../timeline";
-import { C, SANS, prog } from "../theme";
+import { C, SANS } from "../theme";
 
 const T = sceneClock("s02-core");
 
@@ -21,7 +21,6 @@ const LABEL_Y = DOC_CY + DOC_HALF_PX + 40;
 const PATH_Y = 1185;
 
 export const Scene02Core: React.FC = () => {
-  const frame = useCurrentFrame();
   const tBank = T.word("c03", "bank");
   const tRecord = T.word("c03", "record");
   const tFinancial = T.word("c03", "financial");
@@ -32,7 +31,6 @@ export const Scene02Core: React.FC = () => {
   const tPayment = T.word("c05", "payment");
   const tBilling = T.word("c05", "billing");
 
-  const bracket = prog(frame, tCore, 22);
 
   return (
     <AbsoluteFill>
@@ -78,21 +76,7 @@ export const Scene02Core: React.FC = () => {
         </div>
       ))}
 
-      {/* "Core value" bracket */}
-      <div
-        style={{
-          position: "absolute",
-          left: 80,
-          right: 80,
-          top: LABEL_Y + 150,
-          height: 28,
-          borderLeft: `4px solid ${C.yellow}`,
-          borderRight: `4px solid ${C.yellow}`,
-          borderBottom: `4px solid ${C.yellow}`,
-          clipPath: `inset(0 ${(1 - bracket) * 50}% 0 ${(1 - bracket) * 50}%)`,
-        }}
-      />
-      <div style={{ position: "absolute", left: 0, right: 0, top: LABEL_Y + 196, display: "flex", justifyContent: "center" }}>
+      <div style={{ position: "absolute", left: 0, right: 0, top: LABEL_Y + 170, display: "flex", justifyContent: "center" }}>
         <Reveal start={tCore + 8} distance={20}>
           <div style={{ background: C.yellow, color: C.ink, fontFamily: SANS, fontWeight: 900, fontSize: 40, padding: "6px 22px", letterSpacing: "0.02em" }}>
             CORE ACCOUNTING VALUE · WORKS

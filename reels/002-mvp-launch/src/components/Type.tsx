@@ -1,6 +1,6 @@
 import React from "react";
 import { interpolate, useCurrentFrame } from "remotion";
-import { C, EASE_OUT, MONO, SANS, prog } from "../theme";
+import { C, EASE_IN_OUT, EASE_OUT, MONO, SANS, prog } from "../theme";
 
 type WordStyle = { color?: string; marker?: string; strike?: string };
 
@@ -22,7 +22,7 @@ export const RevealWords: React.FC<{
 }> = ({ text, start = 0, stagger = 3, at, style, words = {}, exit, align = "left" }) => {
   const frame = useCurrentFrame();
   const tokens = text.split(" ");
-  const out = exit !== undefined ? prog(frame, exit, 12) : 0;
+  const out = exit !== undefined ? prog(frame, exit, 18, EASE_IN_OUT) : 0;
   return (
     <div
       style={{
@@ -42,7 +42,7 @@ export const RevealWords: React.FC<{
         if (t === "\n") return <div key={i} style={{ flexBasis: "100%", height: 0 }} />;
         const wi = tokens.slice(0, i).filter((x) => x !== "\n").length;
         const s = at ? at[Math.min(wi, at.length - 1)] : start + wi * stagger;
-        const p = prog(frame, s, 16);
+        const p = prog(frame, s, 22);
         const key = t.replace(/[^\p{L}\p{N}≠=-]/gu, "").toLowerCase();
         const ws = words[key] ?? words[t] ?? {};
         const markerP = prog(frame, s + 6, 14);
@@ -125,10 +125,10 @@ export const Reveal: React.FC<{
   exit?: number;
   style?: React.CSSProperties;
   children: React.ReactNode;
-}> = ({ start, dur = 18, from = "up", distance = 40, exit, style, children }) => {
+}> = ({ start, dur = 26, from = "up", distance = 32, exit, style, children }) => {
   const frame = useCurrentFrame();
   const p = prog(frame, start, dur, EASE_OUT);
-  const e = exit !== undefined ? prog(frame, exit, 12) : 0;
+  const e = exit !== undefined ? prog(frame, exit, 18, EASE_IN_OUT) : 0;
   const d = (1 - p) * distance;
   const t =
     from === "up" ? `0 ${d}px` : from === "down" ? `0 ${-d}px` : from === "left" ? `${-d}px 0` : from === "right" ? `${d}px 0` : "0 0";

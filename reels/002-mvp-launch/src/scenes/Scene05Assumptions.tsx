@@ -3,7 +3,7 @@ import { AbsoluteFill, Sequence, interpolate, staticFile, useCurrentFrame } from
 import { Audio } from "@remotion/media";
 import { Background } from "../components/Texture";
 import { ChapterTag } from "../components/Chrome";
-import { Arrow, Badge, DrawPath, Paper } from "../components/Diagram";
+import { Badge, DrawPath, Paper } from "../components/Diagram";
 import { Label, Reveal, RevealWords } from "../components/Type";
 import { BacklogTower3D } from "../three/BacklogTower3D";
 import { sceneClock } from "../timeline";
@@ -20,12 +20,6 @@ const COHORT = [
   { a: [820, 690], b: [620, 960] },
   { a: [900, 690], b: [540, 1030] },
 ] as const;
-
-const STEPS = [
-  { x: 690, label: "Upload" },
-  { x: 820, label: "Record" },
-  { x: 950, label: "Report" },
-];
 
 const TARGET: [number, number] = [540, 1235];
 
@@ -50,7 +44,6 @@ export const Scene05Assumptions: React.FC = () => {
   const tSix = T.cue("c17");
   const tAssume = T.word("c18", "assumptions.");
   const tPmf = T.word("c19", "product-market");
-  const tReal = T.cue("c20");
   const tBehavior = T.word("c20", "behavior");
 
   // Phase B — start small, loop
@@ -144,38 +137,18 @@ export const Scene05Assumptions: React.FC = () => {
           </Reveal>
         </div>
         <svg width={1080} height={1920} style={{ position: "absolute", inset: 0 }}>
-          {STEPS.map((s, i) => (
-            <g key={s.label} opacity={prog(frame, tReal + i * 4, 12)}>
-              <rect x={s.x - 58} y={800} width={116} height={46} rx={8} fill="none" stroke={C.yellow} strokeWidth={3} />
-              <text x={s.x} y={831} textAnchor="middle" fontFamily={MONO} fontSize={19} fill={C.yellow} letterSpacing="0.08em">
-                {s.label.toUpperCase()}
-              </text>
-            </g>
+          {/* Real behaviour: each customer's path leads to the target */}
+          {COHORT.map((d, i) => (
+            <DrawPath
+              key={i}
+              d={`M ${d.a[0]} ${d.a[1]} C ${d.a[0]} ${d.a[1] + 220}, ${TARGET[0] + (d.a[0] - 820) * 0.3} ${TARGET[1] - 260}, ${TARGET[0]} ${TARGET[1] - 104}`}
+              start={tBehavior - 6 + i * 4}
+              dur={26}
+              color={C.yellow}
+              width={2.5}
+              opacity={0.6}
+            />
           ))}
-          {COHORT.map((d, i) => {
-            const step = STEPS[i % 3];
-            const step2 = STEPS[(i + 1) % 3];
-            return (
-              <g key={i}>
-                <DrawPath
-                  d={`M ${d.a[0]} ${d.a[1]} C ${d.a[0]} ${d.a[1] + 60}, ${step.x} ${760}, ${step.x} ${800}`}
-                  start={tBehavior - 10 + i * 3}
-                  dur={16}
-                  color={C.yellow}
-                  width={2.5}
-                  opacity={0.7}
-                />
-                <DrawPath
-                  d={`M ${step.x + 58} 823 L ${step2.x - 58} 823`}
-                  start={tBehavior + 8 + i * 3}
-                  dur={10}
-                  color={C.yellow}
-                  width={2.5}
-                  opacity={0.5}
-                />
-              </g>
-            );
-          })}
           {/* Product-market fit target */}
           <g opacity={prog(frame, tPmf - 6, 14)}>
             {[100, 70, 40].map((r, i) => (
@@ -191,23 +164,7 @@ export const Scene05Assumptions: React.FC = () => {
               />
             ))}
           </g>
-          <Arrow x1={300} y1={1150} x2={430} y2={1215} start={tPmf} dur={16} color={C.coral} dashed bend={-30} width={4} head={false} />
-          <Arrow x1={820} y1={870} x2={TARGET[0] + 46} y2={TARGET[1] - 34} start={tBehavior + 4} dur={18} color={C.yellow} bend={40} width={5} />
         </svg>
-        <div
-          style={{
-            position: "absolute",
-            left: 400,
-            top: 1180,
-            fontFamily: SANS,
-            fontWeight: 900,
-            fontSize: 64,
-            color: C.coral,
-            opacity: prog(frame, tPmf + 14, 8),
-          }}
-        >
-          ?
-        </div>
         <div style={{ position: "absolute", left: 0, right: 0, top: 1345, textAlign: "center" }}>
           <Reveal start={tPmf} distance={10}>
             <Label size={22} color={C.paper}>
@@ -247,14 +204,6 @@ export const Scene05Assumptions: React.FC = () => {
 
       {/* ───────────── PHASE B ───────────── */}
       <div style={{ position: "absolute", left: 80, top: 330 }}>
-        <RevealWords
-          text="Waiting for perfection"
-          start={tSmall + 2}
-          stagger={3}
-          style={{ fontSize: 40, fontWeight: 800, color: C.muted }}
-          words={{ perfection: { strike: C.coral } }}
-        />
-        <div style={{ height: 8 }} />
         <RevealWords
           text="Start small."
           at={[T.word("c21", "start"), T.word("c21", "small?")]}
@@ -340,13 +289,6 @@ export const Scene05Assumptions: React.FC = () => {
           </div>
         );
       })}
-      <div style={{ position: "absolute", left: 0, right: 0, top: LOOP_C[1] + 110, textAlign: "center" }}>
-        <Reveal start={tAdopters + 8} distance={12} exit={tCritical - 6}>
-          <Label size={20} color={C.paper}>
-            Early adopters
-          </Label>
-        </Reveal>
-      </div>
 
       {/* Critical break → fix → expand */}
       <div style={{ position: "absolute", left: 0, right: 0, top: LOOP_C[1] - 160, display: "flex", justifyContent: "center" }}>

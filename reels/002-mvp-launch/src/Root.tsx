@@ -1,6 +1,6 @@
 import React from "react";
 import { AbsoluteFill, Composition, Folder } from "remotion";
-import { Captions, SeriesMark } from "./components/Chrome";
+import { Captions } from "./components/Chrome";
 import { Grain } from "./components/Texture";
 import { Reel, SCENES } from "./Reel";
 import { FPS, HEIGHT, TIMELINE, WIDTH } from "./timeline";
@@ -12,7 +12,6 @@ const scenePreview = (index: number): React.FC => {
   const Preview: React.FC = () => (
     <AbsoluteFill>
       <Comp />
-      <SeriesMark />
       <Captions offset={s.from} />
       <Grain />
     </AbsoluteFill>

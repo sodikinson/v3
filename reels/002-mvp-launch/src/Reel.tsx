@@ -1,7 +1,7 @@
 import React from "react";
 import { AbsoluteFill, Sequence, interpolate, staticFile } from "remotion";
 import { Audio } from "@remotion/media";
-import { Captions, SceneShell, SeriesMark, TransitionKind } from "./components/Chrome";
+import { Captions, SceneShell, TransitionKind } from "./components/Chrome";
 import { Grain } from "./components/Texture";
 import { Scene01Mvp } from "./scenes/Scene01Mvp";
 import { Scene02Core } from "./scenes/Scene02Core";
@@ -17,7 +17,7 @@ export const SCENES: Record<SceneId, { component: React.FC; reveal: TransitionKi
   // Spatial match cut: the next scene irises open out of the MVP milestone diamond.
   "s02-core": { component: Scene02Core, reveal: "iris", origin: [932, 850], title: "02-CoreValue" },
   "s03-disagreement": { component: Scene03Disagreement, reveal: "wipe-left", title: "03-Disagreement" },
-  "s04-bugs": { component: Scene04Bugs, reveal: "blinds", title: "04-WhichBugsMatter" },
+  "s04-bugs": { component: Scene04Bugs, reveal: "dissolve", title: "04-WhichBugsMatter" },
   "s05-assumptions": { component: Scene05Assumptions, reveal: "wipe-up", title: "05-AssumptionsVsReality" },
   "s06-conclusion": { component: Scene06Conclusion, reveal: "iris", origin: [540, 960], title: "06-Verdict" },
 };
@@ -51,19 +51,23 @@ export const Reel: React.FC = () => {
         const isLast = i === TIMELINE.scenes.length - 1;
         return (
           <Sequence key={s.id} name={def.title} from={s.from} durationInFrames={s.duration + (isLast ? 0 : TRANSITION_FRAMES)}>
-            <SceneShell reveal={def.reveal} origin={def.origin}>
+            <SceneShell
+              reveal={def.reveal}
+              origin={def.origin}
+              durationInFrames={s.duration + (isLast ? 0 : TRANSITION_FRAMES)}
+              exitFrames={isLast ? 0 : TRANSITION_FRAMES}
+            >
               <Comp />
             </SceneShell>
             {i > 0 ? (
-              <Sequence durationInFrames={20} layout="none">
-                <Audio src={staticFile("audio/swish.mp3")} volume={0.22} />
+              <Sequence durationInFrames={24} layout="none">
+                <Audio src={staticFile("audio/whoosh.mp3")} volume={0.16} />
               </Sequence>
             ) : null}
           </Sequence>
         );
       })}
 
-      <SeriesMark />
       <Captions />
       <Grain />
 

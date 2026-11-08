@@ -17,7 +17,7 @@ export const Background: React.FC<{ grid?: boolean; glow?: string }> = ({ grid =
             backgroundImage: `linear-gradient(${C.navyLine} 1.5px, transparent 1.5px), linear-gradient(90deg, ${C.navyLine} 1.5px, transparent 1.5px)`,
             backgroundSize: "90px 90px",
             backgroundPosition: "-1px 25px",
-            opacity: 0.45,
+            opacity: 0.22,
             maskImage: "radial-gradient(90% 70% at 50% 45%, black 30%, transparent 85%)",
           }}
         />

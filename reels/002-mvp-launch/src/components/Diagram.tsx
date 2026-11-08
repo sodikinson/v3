@@ -14,7 +14,7 @@ export const DrawPath: React.FC<{
   opacity?: number;
 }> = ({ d, start, dur = 20, color = C.paper, width = 5, dashed, opacity = 1 }) => {
   const frame = useCurrentFrame();
-  const p = prog(frame, start, dur, EASE_IN_OUT);
+  const p = prog(frame, start, dur + 6, EASE_IN_OUT);
   if (dashed) {
     // Dashed lines reveal through a mask so the dash pattern is preserved.
     const id = `m-${start}-${d.length}-${d.charCodeAt(3)}`;
@@ -134,7 +134,7 @@ export const Node: React.FC<{
   fontSize?: number;
 }> = ({ label, sub, start, status, tone = "outline", width = 280, style, fontSize = 36 }) => {
   const frame = useCurrentFrame();
-  const p = prog(frame, start, 16);
+  const p = prog(frame, start, 22);
   const bg = tone === "paper" ? C.paper : tone === "yellow" ? C.yellow : tone === "coral" ? C.coral : "rgba(15,28,46,0.85)";
   const fg = tone === "outline" ? C.white : C.ink;
   const border = tone === "outline" ? `3px solid ${C.navySoft}` : "none";

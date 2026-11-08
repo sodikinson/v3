@@ -22,13 +22,15 @@ export const HEIGHT = 1920;
 const LEAD_IN = Math.round(0.5 * FPS);
 /** A scene's visuals start this long before its first cue, so motion leads the voice. */
 const SCENE_PREROLL: Partial<Record<SceneId, number>> & { default: number } = {
-  default: 0.35,
+  default: 0.7,
   // the recap "evidence board" needs a beat on screen before the narration resumes
   "s06-conclusion": 1.4,
 };
 const prerollFrames = (id: SceneId) => Math.round((SCENE_PREROLL[id] ?? SCENE_PREROLL.default) * FPS);
 /** Outgoing scene stays mounted under the incoming one for the mask transition. */
-export const TRANSITION_FRAMES = 18;
+export const TRANSITION_FRAMES = 30;
+/** Frames the incoming scene's mask takes to open. */
+export const TRANSITION_IN = 26;
 
 type Word = { w: string; s: number; e: number };
 type CueAudio = { file: string; duration: number; words: Word[] };

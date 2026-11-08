@@ -42,7 +42,7 @@ export const EASE_IN_OUT = Easing.bezier(0.65, 0, 0.35, 1);
 export const EASE_IN = Easing.bezier(0.7, 0, 0.84, 0);
 
 /** 0 → 1 between `start` and `start + dur` (clamped, eased). */
-export const prog = (frame: number, start: number, dur = 18, easing = EASE_OUT) =>
+export const prog = (frame: number, start: number, dur = 24, easing = EASE_OUT) =>
   interpolate(frame, [start, start + dur], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",

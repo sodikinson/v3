@@ -15,7 +15,7 @@ const BAR_X0 = 420;
 const BAR_X1 = 1000;
 const MONTH = (BAR_X1 - BAR_X0) / 6;
 const MVP_X = BAR_X0 + MONTH * 5.3;
-const ROW_H = 44;
+const ROW_H = 56;
 const GANTT_TOP = 900;
 
 type Row = { label: string; a: number; b: number; done?: number; core: boolean } | { header: string; core: boolean };
@@ -23,15 +23,13 @@ type Row = { label: string; a: number; b: number; done?: number; core: boolean }
 const ROWS: Row[] = [
   { header: "Core workflow", core: true },
   { label: "Bank statement upload", a: 0, b: 2.6, core: true },
-  { label: "Transaction journal", a: 1, b: 3.6, core: true },
-  { label: "Financial statements", a: 2.2, b: 4.6, core: true },
-  { label: "Signup + free trial", a: 3.2, b: 4.8, core: true },
-  { label: "Payments & billing", a: 4, b: 5.2, core: true },
+  { label: "Transaction journal", a: 1.2, b: 3.8, core: true },
+  { label: "Financial statements", a: 2.4, b: 4.6, core: true },
+  { label: "Signup · trial · billing", a: 3.4, b: 5.2, core: true },
   { header: "Secondary features", core: false },
-  { label: "Custom reports", a: 3.4, b: 6, done: 0.55, core: false },
-  { label: "CSV export", a: 4, b: 6, done: 0.5, core: false },
-  { label: "Mobile layout", a: 4.4, b: 6, done: 0.35, core: false },
-  { label: "Email reminders", a: 4.8, b: 6, done: 0.3, core: false },
+  { label: "Custom reports", a: 3.6, b: 6, done: 0.5, core: false },
+  { label: "CSV export", a: 4.2, b: 6, done: 0.4, core: false },
+  { label: "Mobile layout", a: 4.6, b: 6, done: 0.3, core: false },
 ];
 
 const wordsAt = (cueId: string) => TIMELINE.cues[cueId].words.map((w) => w.from - TIMELINE.cues[cueId].from + T.cue(cueId));
@@ -150,7 +148,7 @@ export const Scene01Mvp: React.FC = () => {
                     width: BAR_X0 - 100,
                     fontFamily: SANS,
                     fontWeight: 600,
-                    fontSize: 26,
+                    fontSize: 28,
                     color: r.core ? C.paper : C.muted,
                     whiteSpace: "nowrap",
                   }}
@@ -271,9 +269,9 @@ const MvpFlag: React.FC<{ start: number }> = ({ start }) => {
         style={{
           position: "absolute",
           left: MVP_X + 4,
-          top: GANTT_TOP + 6 * ROW_H,
+          top: GANTT_TOP + 5 * ROW_H,
           width: (BAR_X1 - MVP_X) * line,
-          height: 5 * ROW_H,
+          height: 4 * ROW_H,
           background: "repeating-linear-gradient(45deg, rgba(232,102,79,0.22) 0 8px, transparent 8px 16px)",
         }}
       />

@@ -68,7 +68,7 @@ const RoleMark: React.FC<{ start: number; role: string; goal: string; accent: st
   );
 };
 
-const BUGS = ["Custom reports · layout breaks", "CSV export · wrong date format", "Mobile · table overflow", "Email reminders · sent twice"];
+const BUGS = ["Custom reports · layout breaks", "CSV export · wrong date format", "Mobile · table overflow"];
 
 export const Scene03Disagreement: React.FC = () => {
   const frame = useCurrentFrame();
@@ -97,7 +97,9 @@ export const Scene03Disagreement: React.FC = () => {
   const hold = prog(frame, tQuote2 - 10, 10);
 
   // Balance beam at "fair concern": stays level — both are right.
-  const beam = prog(frame, tFair, 22);
+  const beam = prog(frame, tFair, 28);
+  // The button and the bug list have made their point; they step back so the beam can speak.
+  const propsOut = prog(frame, tFair - 6, 20, EASE_IN_OUT);
   const beamTilt = interpolate(frame, [tFair, tFair + 16, tFair + 34, tFair + 52], [0, -5, 3, 0], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
@@ -111,27 +113,6 @@ export const Scene03Disagreement: React.FC = () => {
 
       {/* divider */}
       <div style={{ position: "absolute", left: 539, top: TOP, width: 2, height: 900 * divider, background: C.navySoft }} />
-      <div
-        style={{
-          position: "absolute",
-          left: 540 - 34,
-          top: TOP + 40,
-          width: 68,
-          height: 68,
-          borderRadius: 34,
-          background: C.navy,
-          border: `2px solid ${C.navySoft}`,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontFamily: MONO,
-          fontSize: 22,
-          color: C.muted,
-          opacity: mktVisible,
-        }}
-      >
-        VS
-      </div>
 
       {/* CEO */}
       <div style={{ position: "absolute", left: LEFT_X, top: TOP + 10, width: COL_W, opacity: ceoFocus }}>
@@ -140,7 +121,7 @@ export const Scene03Disagreement: React.FC = () => {
           <SyncedQuote cueId="c07" />
         </div>
         {/* Campaign launch button */}
-        <div style={{ position: "relative", marginTop: 10, height: 150 }}>
+        <div style={{ position: "relative", marginTop: 10, height: 150, opacity: 1 - propsOut, translate: `0 ${propsOut * 24}px` }}>
           <div
             style={{
               position: "absolute",
@@ -182,8 +163,8 @@ export const Scene03Disagreement: React.FC = () => {
         <div style={{ marginTop: 40, minHeight: 330 }}>
           <SyncedQuote cueId="c09" warn={["bugs", "bad", "experience"]} />
         </div>
-        <div style={{ position: "relative", marginTop: 10, height: 150 }}>
-          <Paper id="bugs" rotate={2} style={{ left: 0, top: -10, width: COL_W, height: 230 }}>
+        <div style={{ position: "relative", marginTop: 10, height: 150, opacity: 1 - propsOut, translate: `0 ${propsOut * 24}px` }}>
+          <Paper id="bugs" rotate={2} style={{ left: 0, top: -10, width: COL_W, height: 196 }}>
             <div style={{ padding: "18px 22px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                 <Badge start={tBugs - 2} kind="warn" size={34} fill={C.coral} color={C.paper} />
